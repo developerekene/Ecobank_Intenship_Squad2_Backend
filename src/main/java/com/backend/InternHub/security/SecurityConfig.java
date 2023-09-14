@@ -16,8 +16,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/users/signup","/api/users/login").permitAll() // Allow unauthenticated access to signup endpoint
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().permitAll();
+                .anyRequest().authenticated();
     }
 }
