@@ -30,6 +30,7 @@ public class SignupController {
             Response successful = new Response("User successfully registered");
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(successful);
         } catch (EtAuthException ex) {
+            System.out.println(ex);
             // Handle the exception and return an appropriate response
             Response errorResponse = new Response(ex.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(errorResponse);
