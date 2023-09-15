@@ -1,7 +1,7 @@
 package com.backend.InternHub.services.impl;
 
 import com.backend.InternHub.Entities.user.UserEntity;
-import com.backend.InternHub.Repositories.UserRepository;
+import com.backend.InternHub.Repository.UserRepository;
 import com.backend.InternHub.exceptions.EtAuthException;
 import com.backend.InternHub.services.UserService;
 import lombok.extern.slf4j.Slf4j;

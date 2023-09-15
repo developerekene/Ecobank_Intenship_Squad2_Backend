@@ -10,12 +10,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
+    @Deprecated
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/users/signup").permitAll() // Allow unauthenticated access to signup endpoint
+                .antMatchers("/api/users/signup","/api/users/login").permitAll() // Allow unauthenticated access to signup endpoint
                 .anyRequest().authenticated()
                 .and()
                 .antMatcher("/api/users/login")
