@@ -1,14 +1,13 @@
 package com.backend.InternHub.Entities.user;
 
 
+
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
 
 import javax.persistence.*;
 
 
-@Entity
 @Data
 @Table(name = "usertable")
 @RequiredArgsConstructor
