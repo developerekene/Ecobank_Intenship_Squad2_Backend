@@ -28,7 +28,7 @@ public class SignupController {
             user.setPassword(hashedPassword);
             userServiceImpl.registerUser(user);
             Response successful = new Response("User successfully registered");
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(successful);
+            return ResponseEntity.status(HttpStatus.CREATED).body(successful);
         } catch (EtAuthException ex) {
             System.out.println(ex);
             // Handle the exception and return an appropriate response
