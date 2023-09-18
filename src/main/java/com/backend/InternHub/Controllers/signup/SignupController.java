@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ public class SignupController {
 
 
     @PostMapping("/signup")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> signUp(@RequestBody UserEntity user){
         try {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
