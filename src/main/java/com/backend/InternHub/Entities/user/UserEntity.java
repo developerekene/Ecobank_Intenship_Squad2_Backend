@@ -4,23 +4,21 @@ package com.backend.InternHub.Entities.user;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-
-import javax.persistence.*;
-
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Table(name = "usertable")
+@Document("usertable")
 @RequiredArgsConstructor
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-    @Column
+    private String userId;
+
     private String firstname;
-    @Column
+
     private String lastname;
-    @Column
+
     private String email;
-    @Column
+
     private String password;
 }
