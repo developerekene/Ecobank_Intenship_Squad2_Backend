@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
 
 
-@Entity
 @Data
 @Table(name = "usertable")
 @RequiredArgsConstructor
