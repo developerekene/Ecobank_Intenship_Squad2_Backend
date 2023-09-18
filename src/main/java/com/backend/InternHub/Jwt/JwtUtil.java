@@ -15,7 +15,7 @@ public class JwtUtil {
     private final String secret = "Gwiller02"; // Replace with a strong secret key
     private final long expirationTime = TimeUnit.HOURS.toMillis(1); // Token expiration time (1 hours)
 
-    @Deprecated
+
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
