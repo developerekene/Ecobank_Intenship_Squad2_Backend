@@ -2,7 +2,9 @@ package com.backend.InternHub.Jwt;
 
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.SignatureAlgorithm;
+import javax.crypto.SecretKey;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -12,9 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class JwtUtil {
-    private final String secret = "Gwiller02"; // Replace with a strong secret key
+    private final SecretKey secret = Keys.secretKeyFor(SignatureAlgorithm.HS512); // Replace with a strong secret key
     private final long expirationTime = TimeUnit.HOURS.toMillis(1); // Token expiration time (1 hours)
-
 
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();

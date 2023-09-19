@@ -4,26 +4,28 @@ package com.backend.InternHub.Controllers.Login;
 import com.backend.InternHub.Entities.user.UserEntity;
 import com.backend.InternHub.Jwt.JwtUtil;
 import com.backend.InternHub.Repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:3000")
 @Slf4j
 public class UserLoginController {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserRepository userRepository;
+
+    private final JwtUtil jwtUtil;
 
 
     @PostMapping("/login")
