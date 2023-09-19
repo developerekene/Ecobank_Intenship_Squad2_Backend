@@ -39,7 +39,7 @@ public class UserLoginController {
         if (user == null) {
 
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message","user does not exist");
+            errorResponse.put("message","Email or Password is invalid");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
         log.info("password from DB:: {}", user.getPassword());
