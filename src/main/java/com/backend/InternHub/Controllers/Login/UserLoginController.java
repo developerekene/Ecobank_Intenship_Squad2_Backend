@@ -4,6 +4,7 @@ package com.backend.InternHub.Controllers.Login;
 import com.backend.InternHub.Entities.user.UserEntity;
 import com.backend.InternHub.Jwt.JwtUtil;
 import com.backend.InternHub.Repository.UserRepository;
+import com.backend.InternHub.responses.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,11 @@ public class UserLoginController {
             response.put("token", token);
             return ResponseEntity.ok(response);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message","Incorrect password");
+            System.out.println(errorResponse);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+
         }
     }
 }
