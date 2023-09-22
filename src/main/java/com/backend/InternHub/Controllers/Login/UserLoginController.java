@@ -1,20 +1,18 @@
 package com.backend.InternHub.Controllers.Login;
 
 
+import com.backend.InternHub.Entities.user.ProfileData;
 import com.backend.InternHub.Entities.user.UserEntity;
 import com.backend.InternHub.Jwt.JwtUtil;
 import com.backend.InternHub.Repository.UserRepository;
-import com.backend.InternHub.responses.Response;
+import com.backend.InternHub.responses.AuthResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -30,18 +28,19 @@ public class UserLoginController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> loginRequest) {
+    public ResponseEntity<AuthResponse> login(@RequestBody Map<String, String> loginRequest) {
         String email = loginRequest.get("email");
         String password = loginRequest.get("password");
 
         UserEntity user = userRepository.findByEmail(email);
         log.info("password from front:: {}", password);
-
+        String firstname = user.getFirstname();
+        String lastname = user.getLastname();
+        String fullname = firstname+" "+lastname;
         if (user == null) {
-
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message","Email or Password is invalid");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setMessage("Email or Password is invalid");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(authResponse);
         }
         log.info("password from DB:: {}", user.getPassword());
 
@@ -50,14 +49,16 @@ public class UserLoginController {
 
         if (passwordCheck) {
             String token = jwtUtil.generateToken(email);
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            return ResponseEntity.ok(response);
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setToken(token);
+            ProfileData profileData = new ProfileData();
+            profileData.setFullname(fullname);
+            authResponse.setProfileData(profileData);
+            return ResponseEntity.ok(authResponse);
         } else {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message","Incorrect password");
-            System.out.println(errorResponse);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setMessage("Incorrect password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponse);
 
         }
     }
