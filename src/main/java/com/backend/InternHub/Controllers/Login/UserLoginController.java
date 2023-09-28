@@ -4,10 +4,14 @@ package com.backend.InternHub.Controllers.Login;
 import com.backend.InternHub.Entities.user.ProfileData;
 import com.backend.InternHub.Entities.user.UserEntity;
 import com.backend.InternHub.Jwt.JwtUtil;
+import com.backend.InternHub.Repository.ProfileRepository;
 import com.backend.InternHub.Repository.UserRepository;
 import com.backend.InternHub.responses.AuthResponse;
+import com.backend.InternHub.services.impl.ProfileUpdateImpl;
+import com.backend.InternHub.services.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,6 +28,8 @@ public class UserLoginController {
 
     private final UserRepository userRepository;
 
+    private final ProfileUpdateImpl profileUpdate;
+
     private final JwtUtil jwtUtil;
 
 
@@ -31,7 +37,7 @@ public class UserLoginController {
     public ResponseEntity<AuthResponse> login(@RequestBody Map<String, String> loginRequest) {
         String email = loginRequest.get("email");
         String password = loginRequest.get("password");
-
+        System.out.println(loginRequest);
         UserEntity user = userRepository.findByEmail(email);
         log.info("password from front:: {}", password);
         String firstname = user.getFirstname();
@@ -47,16 +53,26 @@ public class UserLoginController {
         boolean passwordCheck = new BCryptPasswordEncoder().matches(password, user.getPassword());
 
 
+        AuthResponse authResponse = new AuthResponse();
         if (passwordCheck) {
-            String token = jwtUtil.generateToken(email);
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setToken(token);
-            ProfileData profileData = new ProfileData();
-            profileData.setFullname(fullname);
-            authResponse.setProfileData(profileData);
+            boolean userExists = profileUpdate.UserExist(email);
+
+                String token = jwtUtil.generateToken(email);
+                authResponse.setToken(token);
+            if (!userExists){
+                ProfileData profileData = new ProfileData();
+                profileData.setFullname(fullname);
+                profileData.setEmail(email);
+                authResponse.setProfileData(profileData);
+                profileUpdate.SaveUser(profileData);
+            }
+            else {
+                ProfileData profile = profileUpdate.getProfileData(email);
+                authResponse.setProfileData(profile);
+                authResponse.setConsoleMessage("already saved profile Data");
+            }
             return ResponseEntity.ok(authResponse);
         } else {
-            AuthResponse authResponse = new AuthResponse();
             authResponse.setMessage("Incorrect password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authResponse);
 

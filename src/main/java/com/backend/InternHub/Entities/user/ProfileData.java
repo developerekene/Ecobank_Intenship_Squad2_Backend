@@ -12,11 +12,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProfileData {
     @Id
-    private String Id;
+    private String id;
+    private String email;
     private String fullname;
     private String jobTitle;
     private String address;
-    private String skills;
+    private List<String> skills;
     private String about;
     private String education;
     private String experience;

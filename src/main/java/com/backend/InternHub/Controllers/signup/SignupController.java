@@ -1,6 +1,7 @@
 package com.backend.InternHub.Controllers.signup;
 
 import com.backend.InternHub.Entities.user.UserEntity;
+
 import com.backend.InternHub.responses.Response;
 import com.backend.InternHub.exceptions.EtAuthException;
 import com.backend.InternHub.services.impl.UserServiceImpl;
@@ -20,7 +21,6 @@ public class SignupController {
     @Autowired
     UserServiceImpl userServiceImpl;
 
-
     @PostMapping("/signup")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Response> signUp(@RequestBody UserEntity user){
@@ -29,6 +29,7 @@ public class SignupController {
             String hashedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(hashedPassword);
             userServiceImpl.registerUser(user);
+
             Response successful = new Response("User successfully registered");
             return ResponseEntity.status(HttpStatus.CREATED).body(successful);
         } catch (EtAuthException ex) {
