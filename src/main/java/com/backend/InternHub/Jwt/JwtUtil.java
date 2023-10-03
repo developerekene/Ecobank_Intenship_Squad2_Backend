@@ -18,13 +18,6 @@ public class JwtUtil {
     private final String secret = "Keys.secretKeyFor(SignatureAlgorithm.HS512)";
     private final long expirationTime = TimeUnit.HOURS.toMillis(1);
 
-
-    private String generateRandomSecretKey() {
-        byte[] randomBytes = new byte[32];
-        new SecureRandom().nextBytes(randomBytes);
-        return Base64.getEncoder().encodeToString(randomBytes);
-    }
-
     public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
         return Jwts.builder()
